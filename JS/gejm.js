@@ -1,55 +1,73 @@
-import { enemy, moveEnemy, pos, currentPos, maxHP } from './enemies/normal.js';
-import { stacker, stackerBullet, stackerAngle, moveStacker, shootStacker, drawStacker, drawStackerBullet, logsStacker, traceStackerBullet } from './towers/stacker.js';
+//importing enemy and tower types with their functions and data
+import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
+import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
 
-let rounds = 0;
-let bossRound = false;
+//exporting rounds for future boss rounds or other purposes
+export let rounds = 0;
 
+//adding rounds function
+export function addRounds() { rounds++; }
+
+//canvas and ctx setup
 let canvas = document.getElementById('canvas');
-if (!canvas) {
-    canvas = document.createElement('canvas');
-    canvas.id = 'canvas';
-    canvas.width = 800;
-    canvas.height = 600;
-    document.body.appendChild(canvas);
-}
 let ctx = canvas.getContext('2d');
 
-function isNear(a, b, range) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    return Math.sqrt(dx * dx + dy * dy) < range;
-}
-
-function ContactBool(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    return Math.sqrt(dx * dx + dy * dy) <= contactRange;
-}
-
+//drawing canvas, enemies and towers
 function draw(ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
     drawStacker(ctx);
     drawStackerBullet(ctx);
-    // Draw enemy
-    if(enemy.alive === true){
+    if (normal.alive === true) {
         ctx.fillStyle = 'red';
-        ctx.fillRect(enemy.x, enemy.y, 50, 50);
+        ctx.fillRect(normal.x, normal.y, 50, 50);
     }
 }
 
-function update() {
-    traceStackerBullet();
-    moveEnemy();
-    moveStacker();
-    logsStacker();
-    if(rounds % 10 == 0) bossRound = true;
-    else bossRound = false;
+//calculating closest enemy for targeting
+function calcClosestEnemy(tower, enemies) {
+    let closestEnemy = null;
+    let minDistance = Infinity;
+
+    enemies.forEach(enemy => {
+        if (enemy.alive) {
+            const dx = enemy.x - tower.x;
+            const dy = enemy.y - tower.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestEnemy = enemy;
+            }
+        }
+    });
+
+    return closestEnemy;
 }
 
+//main update function
+function update() {
+    traceStackerBullet(normal);
+    moveNormal();
+
+    const closest = calcClosestEnemy(stacker, [normal]);
+    if (closest) {
+        moveStacker(closest);
+    }
+
+    logz();
+}
+
+//logging
+function logz() {
+    document.getElementById('hp').innerText = normal.hp;
+    document.getElementById('rounds').innerText = rounds;
+}
+
+//game loop
 function gameLoop() {
     update();
     draw(ctx);
     requestAnimationFrame(gameLoop);
 }
 
+//starting your eternal battle (totally not a DOOM reference)
 gameLoop();

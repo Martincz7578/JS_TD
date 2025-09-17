@@ -1,6 +1,10 @@
-// Enemy logic moved from player.js
-export let enemy = { x: 50, y: 50, speed: 2, alive: true, hp: 100 };
+/* Normal enemy logic
+Enemy ability: Being normal unlike me */
 
+// Enemy info
+export let normal = { x: 50, y: 50, speed: 2, alive: true, hp: 100 };
+
+// Enemy pathing
 export let pos = [
     {x: 1, y: 1},
     {x: 2, y: 1},
@@ -11,33 +15,39 @@ export let pos = [
     {x: 4, y: 4},
     {x: 4, y: 5}
 ];
-
 export let currentPos = 0;
 
+// Max STANDARD health (increases every round)
 export let maxHP=100;
 
-export function moveEnemy(){
-	if(enemy.alive === true){
-		if(enemy.x != pos[currentPos].x * 50){
-			enemy.x += enemy.speed;
+//enemy moving algorithm
+export function moveNormal(){
+	//If he's alive
+	if(normal.alive === true){
+		//x check
+		if(normal.x != pos[currentPos].x * 50){
+			normal.x += normal.speed;
 		}
-		if(enemy.y != pos[currentPos].y * 50){
-			enemy.y += enemy.speed;
+		//y check
+		if(normal.y != pos[currentPos].y * 50){
+			normal.y += normal.speed;
 		}
-		if(currentPos < pos.length-1 && enemy.x == pos[currentPos].x * 50 && enemy.y == pos[currentPos].y * 50){
+		//updating current position
+		if(currentPos < pos.length-1 && normal.x == pos[currentPos].x * 50 && normal.y == pos[currentPos].y * 50){
 			currentPos++;
 		}
-	}else{
-		if(enemy.await < 0){
+	}else{//he's ded
+		if(normal.await < 0){
 			currentPos = 0;
-			enemy.alive = true;
-			enemy.x = pos[currentPos].x*50;
-			enemy.y = pos[currentPos].y*50;
+			normal.alive = true;
+			normal.x = pos[currentPos].x*50;
+			normal.y = pos[currentPos].y*50;
 			maxHP += 10;
-			enemy.hp = maxHP;
+			normal.hp = maxHP;
 			rounds++;
-			if(rounds%10==0 && rounds > 5) enemy.hp = maxHP * 5;
+			if(rounds%10==0 && rounds > 5) normal.hp = maxHP * 5;
 		}
-		enemy.await--;
+		//wait, hold on, wait a minute
+		normal.await--;
 	}
 }
