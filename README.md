@@ -1,1 +1,4 @@
-This is my first game in JavaScript, further description will be added during development of the game. Thank you for your understanding and patiance.
+This is my first game in JavaScript.
+This game at its current stage contains 1 enemy (normal) and 1 tower (stacker).
+Each tower/enemy has theirnown special ability.
+Further description will be added during development of the game. Thank you for your understanding and patiance.
