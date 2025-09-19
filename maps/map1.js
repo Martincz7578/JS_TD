@@ -6,7 +6,7 @@ let turretPositions = [
     {x: 5, y: 5}
 ]
 
-export function setTowerPos(position, tower) {
+export function setTower(position, tower) {
     switch(tower) {
         case "stacker":
             setStackerPos(position.x * 50, position.y * 50);

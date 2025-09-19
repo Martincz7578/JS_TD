@@ -2,7 +2,7 @@
 import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
 
 
-import { setTowerPos } from '../maps/map1.js';
+import { setTower } from '../maps/map1.js';
 
 import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
 
@@ -100,10 +100,6 @@ five.addEventListener("change", (event) => {
 six.addEventListener("change", (event) => {
     setTower(6, event.target.value);
 });
-
-export  function setTower(position, tower) {
-    setTowerPos(position, tower);
-}
 
 //starting your eternal battle (totally not a DOOM reference)
 gameLoop();
