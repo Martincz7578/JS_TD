@@ -1,5 +1,9 @@
 //importing enemy and tower types with their functions and data
 import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
+
+
+import { setTowerPos } from '../maps/map1.js';
+
 import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
 
 //exporting rounds for future boss rounds or other purposes
@@ -67,6 +71,37 @@ function gameLoop() {
     update();
     draw(ctx);
     requestAnimationFrame(gameLoop);
+}
+
+const one = document.getElementById("slot1");
+const two = document.getElementById("slot2");
+const three = document.getElementById("slot3");
+const four = document.getElementById("slot4");
+const five = document.getElementById("slot5");
+const six = document.getElementById("slot6");
+
+
+one.addEventListener("change", (event) => {
+    setTower(1, event.target.value);
+});
+two.addEventListener("change", (event) => {
+    setTower(2, event.target.value);
+});
+three.addEventListener("change", (event) => {
+    setTower(3, event.target.value);
+});
+four.addEventListener("change", (event) => {
+    setTower(4, event.target.value);
+});
+five.addEventListener("change", (event) => {
+    setTower(5, event.target.value);
+});
+six.addEventListener("change", (event) => {
+    setTower(6, event.target.value);
+});
+
+export  function setTower(position, tower) {
+    setTowerPos(position, tower);
 }
 
 //starting your eternal battle (totally not a DOOM reference)

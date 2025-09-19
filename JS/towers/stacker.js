@@ -125,3 +125,8 @@ export function traceStackerBullet(enemy) {
         stackerBullet.y = 2000;
     }
 }
+
+export function setStackerPos(x, y) {
+    stacker.x = x;
+    stacker.y = y;
+}
