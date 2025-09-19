@@ -1,4 +1,4 @@
-import { setStackerPos } from "../JS/stacker"
+import { setStackerPos } from "../JS/stacker.js"
 
 let turretPositions = [
     {x: 2, y: 2},
