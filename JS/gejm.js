@@ -1,10 +1,10 @@
 //importing enemy and tower types with their functions and data
-import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet, setStackerPos/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
+import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet, setStackerPos/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.mjs';
 
-import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
+import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.mjs';
 
 
-import { setTower } from '../maps/map1.js';
+import { setTower } from '../maps/map1.mjs';
 
 //exporting rounds for future boss rounds or other purposes
 export let rounds = 0;
