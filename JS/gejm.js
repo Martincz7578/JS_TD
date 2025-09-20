@@ -82,7 +82,6 @@ const six = document.getElementById("slot6");
 
 one.addEventListener("change", (event) => {
     let value = event.target.value;
-    console.log(value);
     setTower(1, value);
 });
 two.addEventListener("change", (event) => {
