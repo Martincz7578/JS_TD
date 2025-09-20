@@ -105,5 +105,9 @@ six.addEventListener("change", (event) => {
     setTower(6, value);
 });
 
+function revertChoice(element, previousValue) {
+    element.value = previousValue;
+}
+
 //starting your eternal battle (totally not a DOOM reference)
 gameLoop();
