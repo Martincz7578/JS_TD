@@ -80,25 +80,30 @@ const four = document.getElementById("slot4");
 const five = document.getElementById("slot5");
 const six = document.getElementById("slot6");
 
-
 one.addEventListener("change", (event) => {
-    console.log(event.target.value);
-    setTower(1, event.target.value);
+    let value = event.target.value;
+    console.log(value);
+    setTower(1, value);
 });
 two.addEventListener("change", (event) => {
-    setTower(2, event.target.value);
+    let value = event.target.value;
+    setTower(2, value);
 });
 three.addEventListener("change", (event) => {
-    setTower(3, event.target.value);
+    let value = event.target.value;
+    setTower(3, value);
 });
 four.addEventListener("change", (event) => {
-    setTower(4, event.target.value);
+    let value = event.target.value;
+    setTower(4, value);
 });
 five.addEventListener("change", (event) => {
-    setTower(5, event.target.value);
+    let value = event.target.value;
+    setTower(5, value);
 });
 six.addEventListener("change", (event) => {
-    setTower(6, event.target.value);
+    let value = event.target.value;
+    setTower(6, value);
 });
 
 //starting your eternal battle (totally not a DOOM reference)
