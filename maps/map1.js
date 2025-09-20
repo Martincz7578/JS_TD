@@ -7,6 +7,8 @@ let turretPositions = [
 ]
 
 export function setTower(position, tower) {
+    console.log('Setting tower:', tower, 'at position:', position);
+    console.trace();
     switch(tower) {
         case "stacker":
             setStackerPos(turretPositions[position - 1].x * 50, turretPositions[position - 1].y * 50);
