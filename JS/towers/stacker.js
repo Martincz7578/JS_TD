@@ -5,7 +5,7 @@ This towers ability is: stacking damage over time*/
 import { addRounds } from "../gejm.js";
 
 //exporting data of the tower and its bullet
-export let stacker = { x: 200, y: 300, speed: 10 };
+export let stacker = { x: 2000, y: 3000, speed: 10 };
 export let stackerBullet = { x: 0, y: 0, speed: 15, angle: 0, active: false, hitStreak: 0, damage: 10, tempDamage: 10 };
 
 //exportting ranges
