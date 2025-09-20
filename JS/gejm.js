@@ -105,7 +105,7 @@ six.addEventListener("change", (event) => {
     setTower(6, value);
 });
 
-function revertChoice(element, previousValue) {
+export function revertChoice(element, previousValue) {
     element.value = previousValue;
 }
 
