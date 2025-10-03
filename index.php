@@ -14,38 +14,32 @@
         <tr>
             <td>
                 <select name="Tower slot 1" id="slot1">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
             <td>
                 <select name="Tower slot 2" id="slot2">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
             <td>
                 <select name="Tower slot 3" id="slot3">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
             <td>
                 <select name="Tower slot 4" id="slot4">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
             <td>
                 <select name="Tower slot 5" id="slot5">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
             <td>
                 <select name="Tower slot 6" id="slot6">
-                    <option value="None" selected>Empty</option>
-                    <option value="stacker">Stacker</option>
+                    <?php include 'options.php'; ?>
                 </select>
             </td>
         </tr>

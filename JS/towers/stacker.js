@@ -9,13 +9,13 @@ export let stacker = { x: 2000, y: 3000, speed: 10 };
 export let stackerBullet = { x: 0, y: 0, speed: 15, angle: 0, active: false, hitStreak: 0, damage: 10, tempDamage: 10 };
 
 //exportting ranges
-export let detectionRange = 500;
+export let detectionRange = 250;
 export let contactRange = 50;
 
 //exportting cooldowns
 export let damageCooldown = 0;  
 export let currentCooldown = 0;
-export const maxCooldown = 100;
+export const enemyCooldown = 100;
 
 export let stackerAngle = 0;
 
@@ -29,12 +29,19 @@ let canvas = document.getElementById('canvas');
 export function moveStacker(target) {
     if (!target) return;
     stackerAngle = pythagorasStacker(target);
-    shootStacker();
+    shootStacker(target);
+}
+
+export function inRange(enemy, tower = stacker, range = detectionRange) {
+    const dx = enemy.x - tower.x;
+    const dy = enemy.y - tower.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return distance <= range;
 }
 
 //shooting function
-export function shootStacker() {
-    if (!stackerBullet.active) {
+export function shootStacker(target) {
+    if (!stackerBullet.active && inRange(target)) {
         stackerBullet.x = stacker.x + 25;
         stackerBullet.y = stacker.y + 25;
         stackerBullet.angle = stackerAngle;
@@ -74,7 +81,7 @@ export function drawStackerBullet(ctx){
 }
 
 //checking contact between tower bullet and enemy
-function ContactBool(a, b) {
+export function ContactBool(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
     return Math.sqrt(dx * dx + dy * dy) <= contactRange;
@@ -100,14 +107,14 @@ export function traceStackerBullet(enemy) {
         //enemy death or just damage :(
         if (enemy.hp - stackerBullet.tempDamage <= 0) {
             enemy.alive = false;
-            enemy.await = maxCooldown - 50;
+            enemy.await = enemyCooldown - 50;
             enemy.hp = 0;
             addRounds();
         } else {
             enemy.hp -= stackerBullet.tempDamage;
         }//resetting bullet position to avoid bugs
         stackerBullet.x = 2000;
-        stackerBullet.y = 2000;
+        stackerBullet.y = 3000;
     }else{//stack ability reset if no contact
         stackerBullet.hitStreak = 0;
         stackerBullet.tempDamage = stackerBullet.damage;
@@ -122,7 +129,7 @@ export function traceStackerBullet(enemy) {
     ) {
         stackerBullet.active = false;
         stackerBullet.x = 2000;
-        stackerBullet.y = 2000;
+        stackerBullet.y = 3000;
     }
 }
 

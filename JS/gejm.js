@@ -1,5 +1,6 @@
 //importing enemy and tower types with their functions and data
-import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet, setStackerPos/*, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
+import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet/*, setStackerPos, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
+import { sniper, moveSniper, drawSniper, drawSniperBullet, traceSniperBullet/*, setSniperPos, sniperBullet, sniperAngle, shootSniper*/ } from './towers/sniper.js';
 
 import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
 
@@ -21,6 +22,8 @@ function draw(ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
     drawStacker(ctx);
     drawStackerBullet(ctx);
+    drawSniper(ctx);
+    drawSniperBullet(ctx);
     if (normal.alive === true) {
         ctx.fillStyle = 'red';
         ctx.fillRect(normal.x, normal.y, 50, 50);
@@ -50,13 +53,18 @@ function calcClosestEnemy(tower, enemies) {
 //main update function
 function update() {
     traceStackerBullet(normal);
+    traceSniperBullet(normal);
     moveNormal();
 
-    const closest = calcClosestEnemy(stacker, [normal]);
-    if (closest) {
-        moveStacker(closest);
+    const stackerTarget = calcClosestEnemy(stacker, [normal]);
+    if (stackerTarget) {
+        moveStacker(stackerTarget);
     }
 
+    const sniperTarget = calcClosestEnemy(sniper, [normal]);
+    if (sniperTarget) {
+        moveSniper(sniperTarget);
+    }
     logz();
 }
 
