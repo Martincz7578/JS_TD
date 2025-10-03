@@ -1,40 +1,43 @@
-//importing enemy and tower types with their functions and data
-import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet/*, setStackerPos, stackerBullet, stackerAngle, shootStacker*/ } from './towers/stacker.js';
-import { sniper, moveSniper, drawSniper, drawSniperBullet, traceSniperBullet/*, setSniperPos, sniperBullet, sniperAngle, shootSniper*/ } from './towers/sniper.js';
+import { stacker, moveStacker, drawStacker, drawStackerBullet, traceStackerBullet } from './towers/stacker.js';
+import { sniper, moveSniper, drawSniper, drawSniperBullet, traceSniperBullet } from './towers/sniper.js';
 
-import { normal, moveNormal/*, pos, currentPos, maxHP*/ } from './enemies/normal.js';
+import { normal, moveNormal, drawNormal, leadSpawnCondition,  resetLeadSpawnCondition} from '/JS/enemies/normal.js';
+import { tank, moveTank, drawTank } from '/JS/enemies/tank.js';
+import { sprinter, sprint, drawFast } from '/JS/enemies/sprinter.js';
 
+import { setTower } from '/maps/map1.js';
 
-import { setTower } from '../maps/map1.js';
+const towers = [stacker, sniper];
+const enemies = [normal, tank, sprinter];
+const moves = [moveNormal, moveTank, sprint];
 
-//exporting rounds for future boss rounds or other purposes
 export let rounds = 0;
-
-//adding rounds function
 export function addRounds() { rounds++; }
+window.setRound = function(value) { rounds = value; }
 
-//canvas and ctx setup
+const start = document.getElementById('start');
+start.addEventListener('click', () => {
+    start.style.display = 'none';
+    gameLoop();
+});
+
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 
-//drawing canvas, enemies and towers
 function draw(ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
     drawStacker(ctx);
     drawStackerBullet(ctx);
     drawSniper(ctx);
     drawSniperBullet(ctx);
-    if (normal.alive === true) {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(normal.x, normal.y, 50, 50);
-    }
+    drawNormal(ctx);
+    drawTank(ctx);
+    drawFast(ctx);
 }
 
-//calculating closest enemy for targeting
 function calcClosestEnemy(tower, enemies) {
     let closestEnemy = null;
     let minDistance = Infinity;
-
     enemies.forEach(enemy => {
         if (enemy.alive) {
             const dx = enemy.x - tower.x;
@@ -46,35 +49,42 @@ function calcClosestEnemy(tower, enemies) {
             }
         }
     });
-
     return closestEnemy;
 }
 
-//main update function
-function update() {
-    traceStackerBullet(normal);
-    traceSniperBullet(normal);
-    moveNormal();
-
-    const stackerTarget = calcClosestEnemy(stacker, [normal]);
-    if (stackerTarget) {
-        moveStacker(stackerTarget);
+function moveIt(tower, target){    
+    switch(tower){
+        case stacker:
+            moveStacker(target);
+            traceStackerBullet(target);
+            break;
+        case sniper:
+            moveSniper(target);
+            traceSniperBullet(target);
+            break;
     }
+}
 
-    const sniperTarget = calcClosestEnemy(sniper, [normal]);
-    if (sniperTarget) {
-        moveSniper(sniperTarget);
+function advance(){
+    const notAlive = enemies.every(enemy => !enemy.alive);
+    if(!notAlive && leadSpawnCondition) addRounds(); resetLeadSpawnCondition();
+    moves.forEach(move => move(notAlive));
+}
+
+function update() {
+    advance();
+    for (let tower of towers) {
+        let closer = calcClosestEnemy(tower, enemies);
+        if(closer) moveIt(tower, closer);
     }
     logz();
 }
 
-//logging
 function logz() {
     document.getElementById('hp').innerText = normal.hp;
     document.getElementById('rounds').innerText = rounds;
 }
 
-//game loop
 function gameLoop() {
     update();
     draw(ctx);
@@ -116,6 +126,3 @@ six.addEventListener("change", (event) => {
 export function revertChoice(element, previousValue) {
     element.value = previousValue;
 }
-
-//starting your eternal battle (totally not a DOOM reference)
-gameLoop();

@@ -1,4 +1,3 @@
-import { addRounds } from "../gejm.js";
 import { ContactBool, enemyCooldown, inRange } from "./stacker.js";
 
 export let sniper = { x: 2000, y: 3000, speed: 10 };
@@ -75,7 +74,6 @@ export function traceSniperBullet(enemy) {
             enemy.alive = false;
             enemy.await = enemyCooldown - 50;
             enemy.hp = 0;
-            addRounds();
         }else{
             enemy.hp -= sniperBullet.damage;
         }

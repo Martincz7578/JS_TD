@@ -1,11 +1,21 @@
 import { setStackerPos, stacker } from "/JS/towers/stacker.js";
 import { setSniperPos, sniper } from "/JS/towers/sniper.js";
 
-import { pos } from "/JS/enemies/normal.js";
-
 import { revertChoice } from "/JS/gejm.js";
 
-let turretPositions = [
+// Enemy pathing
+export const enemyPositions = [
+    {x: 1, y: 1},
+    {x: 2, y: 1},
+    {x: 3, y: 1},
+    {x: 4, y: 1},
+    {x: 4, y: 2},
+    {x: 4, y: 3},
+    {x: 4, y: 4},
+    {x: 4, y: 5}
+];
+
+const turretPositions = [
     {x: 2, y: 2},
     {x: 3, y: 3},
     {x: 5, y: 5},

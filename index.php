@@ -44,7 +44,7 @@
             </td>
         </tr>
     </table>
+    <button id="start">Start</button>
     <script type="module" src="JS/gejm.js"></script>
-    <script type="module" src="JS/towers/stacker.js"></script>
 </body>
 </html>

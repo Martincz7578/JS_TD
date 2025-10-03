@@ -1,31 +1,26 @@
-/*This file contains the logic used for tower called "Stacker"
-This towers ability is: stacking damage over time*/
-
-//importing function for adding rounds from gejm.js
-import { addRounds } from "../gejm.js";
-
-//exporting data of the tower and its bullet
 export let stacker = { x: 2000, y: 3000, speed: 10 };
-export let stackerBullet = { x: 0, y: 0, speed: 15, angle: 0, active: false, hitStreak: 0, damage: 10, tempDamage: 10 };
+export let stackerBullet = { x: 0, y: 0, speed: 15, angle: 0, active: false, damage: 10, tempDamage: 10 };
 
-//exportting ranges
 export let detectionRange = 250;
 export let contactRange = 50;
 
-//exportting cooldowns
 export let damageCooldown = 0;  
 export let currentCooldown = 0;
 export const enemyCooldown = 100;
 
 export let stackerAngle = 0;
 
-//getting canvas info
+let hitStreak = 0;
+let highestStreakDemage = 0;
+
 let canvas = document.getElementById('canvas');
 
-//ctx is not used for the time being
-//let ctx = canvas.getContext('2d');
+export function resetHitStreak() { 
+    hitStreak = 0; 
+    highestStreakDemage = stackerBullet.tempDamage; 
+    stackerBullet.tempDamage = stackerBullet.damage; 
+}
 
-//actions/moves of the tower
 export function moveStacker(target) {
     if (!target) return;
     stackerAngle = pythagorasStacker(target);
@@ -39,7 +34,6 @@ export function inRange(enemy, tower = stacker, range = detectionRange) {
     return distance <= range;
 }
 
-//shooting function
 export function shootStacker(target) {
     if (!stackerBullet.active && inRange(target)) {
         stackerBullet.x = stacker.x + 25;
@@ -49,14 +43,12 @@ export function shootStacker(target) {
     }
 }
 
-//calculations of the right aim angle
 export function pythagorasStacker(enemy){
     let dx = enemy.x - stacker.x;
     let dy = enemy.y - stacker.y;
     return Math.atan2(dy, dx);
 }
 
-//the towers graphics
 export function drawStacker(ctx){
     ctx.save();
     ctx.translate(stacker.x + 25, stacker.y + 25);
@@ -66,7 +58,6 @@ export function drawStacker(ctx){
     ctx.restore();
 }
 
-//the towers bullet graphics
 export function drawStackerBullet(ctx){
     if (stackerBullet.active) {
         ctx.save();
@@ -80,47 +71,36 @@ export function drawStackerBullet(ctx){
     }
 }
 
-//checking contact between tower bullet and enemy
 export function ContactBool(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
     return Math.sqrt(dx * dx + dy * dy) <= contactRange;
 }
 
-//tracing the bullet and checking for contact with enemy
 export function traceStackerBullet(enemy) {
-    //checking if the bullet is active
     if (!stackerBullet.active) return;
 
-    //calculating new position of the bullet
     stackerBullet.x += Math.cos(stackerBullet.angle) * stackerBullet.speed;
     stackerBullet.y += Math.sin(stackerBullet.angle) * stackerBullet.speed;
 
-    //checking for contact with enemy
     if (enemy.alive && ContactBool(enemy, stackerBullet)) {
-        stackerBullet.hitStreak++;
-        if(stackerBullet.hitStreak % 3 === 0){
-            stackerBullet.damage += 5;
-        }
+        hitStreak++;
+        stackerBullet.tempDamage = hitStreak % 3 === 0 ? hitStreak / 3 * stackerBullet.damage : highestStreakDemage;
+        if (stackerBullet.tempDamage > highestStreakDemage) highestStreakDemage = stackerBullet.tempDamage;
         stackerBullet.active = false;
         damageCooldown = 5;
-        //enemy death or just damage :(
         if (enemy.hp - stackerBullet.tempDamage <= 0) {
             enemy.alive = false;
             enemy.await = enemyCooldown - 50;
             enemy.hp = 0;
-            addRounds();
+            resetHitStreak();
         } else {
             enemy.hp -= stackerBullet.tempDamage;
-        }//resetting bullet position to avoid bugs
+        }
         stackerBullet.x = 2000;
         stackerBullet.y = 3000;
-    }else{//stack ability reset if no contact
-        stackerBullet.hitStreak = 0;
-        stackerBullet.tempDamage = stackerBullet.damage;
     }
 
-    //out of bound check
     if (
         stackerBullet.x > canvas.width ||
         stackerBullet.x < 0 ||
