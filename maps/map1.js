@@ -1,5 +1,9 @@
-import { setStackerPos } from "../JS/towers/stacker.js";
-import { revertChoice } from "../JS/gejm.js";
+import { setStackerPos, stacker } from "/JS/towers/stacker.js";
+import { setSniperPos, sniper } from "/JS/towers/sniper.js";
+
+import { pos } from "/JS/enemies/normal.js";
+
+import { revertChoice } from "/JS/gejm.js";
 
 let turretPositions = [
     {x: 2, y: 2},
@@ -10,21 +14,50 @@ let turretPositions = [
     {x: 8, y: 3}
 ]
 
-let placedTowers = {
-    stacker: false
+let towersStates = {
+    stacker: { placed: false, pos: null },
+    sniper: { placed: false, pos: null }
+}
+
+function isPositionOccupied(position) {
+    switch(position) {
+        case towersStates.stacker.pos:
+            towersStates.stacker.placed = false;
+            towersStates.stacker.pos = null;
+            setStackerPos(2000, 3000);
+            break;
+        case towersStates.sniper.pos:
+            towersStates.sniper.placed = false;
+            towersStates.sniper.pos = null;
+            setSniperPos(2000, 3000);
+            break;
+    }
 }
 
 export function setTower(position, tower) {
     switch(tower) {
         case "stacker":
-            if (!placedTowers.stacker) {
+            if (!towersStates.stacker.placed) {
+                isPositionOccupied(position);
                 setStackerPos(turretPositions[position - 1].x * 50, turretPositions[position - 1].y * 50);
-                placedTowers.stacker = true;
+                towersStates.stacker.placed = true;
+                towersStates.stacker.pos = position;
+            }else{
+                revertChoice(document.getElementById(`slot${position}`), "None");
+            }
+            break;
+        case "sniper":
+            if(!towersStates.sniper.placed) {
+                isPositionOccupied(position);
+                setSniperPos(turretPositions[position - 1].x * 50, turretPositions[position - 1].y * 50);
+                towersStates.sniper.placed = true;
+                towersStates.sniper.pos = position;
             }else{
                 revertChoice(document.getElementById(`slot${position}`), "None");
             }
             break;
         case "None":
+            isPositionOccupied(position);
             break;
         default:
             console.log('Unknown tower type:', tower);
